@@ -1,7 +1,18 @@
 # ------------------------------------------------------------
-# PREAMBLE
+# Kyle Scot Shank
+# College of the Atlantic - 2014
+#
+#
+# This is the Python code utilized in my senior project:
+# "Evaluating Methods for Detecting Critical Transitions in Agent Based Models"
+#
+#
 # ------------------------------------------------------------
 
+
+# ------------------------------------------------------------
+# PREAMBLE
+# ------------------------------------------------------------
 
 from math import *
 from numpy import *
@@ -13,7 +24,9 @@ import random
 
 # ------------------------------------------------------------
 # MODEL
-# 
+#
+# Modeled on Boerlijst et al. 2013
+#
 # Juv. Prey Density  = dJ/dt = f(A) - g(J) - uJ*J
 # Adult Prey Density = dA/dt = g(J) - h(A,P) - uA*A
 # Predators Density  = dP/dt = h(A,P)*c - uP*P
@@ -24,7 +37,7 @@ import random
 # 
 # g(J) is a function that specifies the maturation rate of Juv. Prey
 # and is realized as g(J) = J/(1+J**2). Maturation here is modeled as
-# a non-linear process (thus giving rus to our chaotic behavior).
+# a non-linear process (thus giving rise to chaotic population trajectories).
 #
 # h(A,P) is the predation rate on adults and is realized as h(A,P) = A*P
 # 
@@ -210,6 +223,7 @@ predPN  = [i[2] for i in tsPN]
 # ------------------------------------------------------------
 # PLOT FUNCTIONS
 # ------------------------------------------------------------
+
 time = np.linspace(0,t,t*stepSize)
 pDash = [5,2,10,5]
 jDash = [2,4,2,4]
@@ -242,7 +256,7 @@ p.legend(loc='best')
 p.xlabel('Time')
 p.ylabel('Population Density')
 p.title('Evolution of Population Density')
-p.show()
+
 
 f3 = p.figure()
 f3.canvas.set_window_title('Population Density with increasing uP (pink noise)')
@@ -257,70 +271,71 @@ p.title('Evolution of Population Density')
 
 p.show()
 
-### ------------------------------------------------------------
-### OUTPUT FUNCTIONS
-###
-###
-### Writes to output files (.csv) for analysis in R
-### ------------------------------------------------------------
-##
-#### ------------------------------------------------------------
-#### Write TS with no noise
-#### ------------------------------------------------------------
-##output_file = open("tsNoNoise.csv", "w")
-##data_str = "time" + ",\t" + "juv" + ",\t" + "adult" + ",\t" + "pred" + ",\t" + "uP\n"
-##output_file.write(data_str)
-##for i in range(len(juv)):
-##    data_str = str(i) + ",\t" + str(juv[i]) + ",\t" + str(adult[i]) + ",\t"
-##    data_str += str(pred[i]) + ",\t" + str(m_list[i]+uP) + "\n"
-##    output_file.write(data_str)
-##output_file.close()
-##
-### ------------------------------------------------------------
-### Write TS with white noise
-### ------------------------------------------------------------
-##
-##output_file = open("tsWhiteNoise.csv", "w")
-##data_str = "time" + ",\t" + "juv" + ",\t" + "adult" + ",\t" + "pred" + ",\t" + "uP\n"
-##output_file.write(data_str)
-##for i in range(len(juvWN)):
-##    data_str = str(i) + ",\t" + str(juvWN[i]) + ",\t" + str(adultWN[i]) + ",\t"
-##    data_str += str(predWN[i]) + ",\t" + str(mu_list[i]+uP) + "\n"
-##    output_file.write(data_str)
-##output_file.close()
+
+# ------------------------------------------------------------
+# OUTPUT FUNCTIONS
+#
+#
+# Writes to output files (.csv) for analysis in R
+# ------------------------------------------------------------
+
+## ------------------------------------------------------------
+## Write TS with no noise
+## ------------------------------------------------------------
+output_file = open("tsNoNoise.csv", "w")
+data_str = "time" + ",\t" + "juv" + ",\t" + "adult" + ",\t" + "pred" + ",\t" + "uP\n"
+output_file.write(data_str)
+for i in range(len(juv)):
+    data_str = str(i) + ",\t" + str(juv[i]) + ",\t" + str(adult[i]) + ",\t"
+    data_str += str(pred[i]) + ",\t" + str(m_list[i]+uP) + "\n"
+    output_file.write(data_str)
+output_file.close()
+
+# ------------------------------------------------------------
+# Write TS with white noise
+# ------------------------------------------------------------
+
+output_file = open("tsWhiteNoise.csv", "w")
+data_str = "time" + ",\t" + "juv" + ",\t" + "adult" + ",\t" + "pred" + ",\t" + "uP\n"
+output_file.write(data_str)
+for i in range(len(juvWN)):
+    data_str = str(i) + ",\t" + str(juvWN[i]) + ",\t" + str(adultWN[i]) + ",\t"
+    data_str += str(predWN[i]) + ",\t" + str(mu_list[i]+uP) + "\n"
+    output_file.write(data_str)
+output_file.close()
+
+# ------------------------------------------------------------
+# Write TS with pink noise
+# ------------------------------------------------------------
+
+output_file = open("tsPinkNoise.csv", "w")
+data_str = "time" + ",\t" + "juv" + ",\t" + "adult" + ",\t" + "pred" + ",\t" + "uP\n"
+output_file.write(data_str)
+for i in range(len(juvPN)):
+    data_str = str(i) + ",\t" + str(juvPN[i]) + ",\t" + str(adultPN[i]) + ",\t"
+    data_str += str(predPN[i]) + ",\t" + str(meow_list[i]) + "\n"
+    output_file.write(data_str)
+output_file.close()
+
 
 ### ------------------------------------------------------------
-### Write TS with pink noise
+### Write noise files for spectral analysis
 ### ------------------------------------------------------------
-##
-##output_file = open("tsPinkNoise.csv", "w")
-##data_str = "time" + ",\t" + "juv" + ",\t" + "adult" + ",\t" + "pred" + ",\t" + "uP\n"
-##output_file.write(data_str)
-##for i in range(len(juvPN)):
-##    data_str = str(i) + ",\t" + str(juvPN[i]) + ",\t" + str(adultPN[i]) + ",\t"
-##    data_str += str(predPN[i]) + ",\t" + str(meow_list[i]) + "\n"
-##    output_file.write(data_str)
-##output_file.close()
-##
-##
-##### ------------------------------------------------------------
-##### Write noise files for spectral analysis
-##### ------------------------------------------------------------
-##output_file = open("pinkNoise.csv","w")
-##data_str = "time" + ",\t" + "noise\n"
-##output_file.write(data_str)
-##for i in range(len(pn)):
-##    data_str = str(i) + ",\t" + str(tinyPN[i]) + "\n"
-##    output_file.write(data_str)
-##output_file.close()
-##
-##output_file = open("whiteNoise.csv","w")
-##data_str = "time" + ",\t" + "noise\n"
-##output_file.write(data_str)
-##for i in range(len(wn)):
-##    data_str = str(i) + ",\t" + str(wn[i]) + "\n"
-##    output_file.write(data_str)
-##output_file.close()
+output_file = open("pinkNoise.csv","w")
+data_str = "time" + ",\t" + "noise\n"
+output_file.write(data_str)
+for i in range(len(pn)):
+    data_str = str(i) + ",\t" + str(tinyPN[i]) + "\n"
+    output_file.write(data_str)
+output_file.close()
 
-##
+output_file = open("whiteNoise.csv","w")
+data_str = "time" + ",\t" + "noise\n"
+output_file.write(data_str)
+for i in range(len(wn)):
+    data_str = str(i) + ",\t" + str(wn[i]) + "\n"
+    output_file.write(data_str)
+output_file.close()
+
+
 
